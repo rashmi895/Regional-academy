@@ -20,7 +20,20 @@ import {
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 
-const navItems = [
+type NavItem = {
+  name: string;
+  href: string;
+  icon: any;
+  badge?: string;
+  badgeColor?: "amber" | "primary" | string;
+};
+
+type NavGroup = {
+  group: string;
+  items: NavItem[];
+};
+
+const navItems: NavGroup[] = [
   {
     group: "CONTENT",
     items: [

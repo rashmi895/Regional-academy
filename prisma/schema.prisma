@@ -1,0 +1,209 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+enum LeadStatus {
+  NEW
+  HOT
+  FOLLOW_UP
+  ENROLLED
+  LOST
+}
+
+enum EnquiryStatus {
+  PENDING
+  CONTACTED
+  RESOLVED
+  CLOSED
+}
+
+enum CollegeType {
+  GOVERNMENT
+  PRIVATE
+  DEEMED
+  AUTONOMOUS
+}
+
+enum CourseLevel {
+  UG
+  PG
+  DIPLOMA
+  CERTIFICATE
+}
+
+enum CollegeCategory {
+  PAN_INDIA
+  ODISHA
+  INTERNATIONAL
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(ADMIN)
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  blogs     Blog[]
+}
+
+model College {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  location    String
+  city        String
+  state       String      @default("Odisha")
+  type        CollegeType
+  category    CollegeCategory @default(ODISHA)
+  description String?     @db.Text
+  logo        String?
+  website     String?
+  phone       String?
+  email       String?
+  ranking     Int?
+  isActive    Boolean     @default(true)
+  courses     Course[]
+  enquiries   Enquiry[]
+  leads       Lead[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Course {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  level       CourseLevel
+  duration    String
+  description String?     @db.Text
+  fees        String?
+  eligibility String?
+  collegeId   String?
+  college     College?    @relation(fields: [collegeId], references: [id], onDelete: SetNull)
+  isActive    Boolean     @default(true)
+  enquiries   Enquiry[]
+  leads       Lead[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Exam {
+  id                   String   @id @default(cuid())
+  name                 String
+  slug                 String   @unique
+  type                 String
+  examDate             DateTime?
+  registrationStart    DateTime?
+  registrationDeadline DateTime?
+  resultDate           DateTime?
+  description          String?  @db.Text
+  eligibility          String?
+  officialWebsite      String?
+  isActive             Boolean  @default(true)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model Enquiry {
+  id          String        @id @default(cuid())
+  studentName String
+  phone       String
+  email       String?
+  courseId     String?
+  course      Course?       @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  collegeId   String?
+  college     College?      @relation(fields: [collegeId], references: [id], onDelete: SetNull)
+  message     String?       @db.Text
+  source      String?       @default("website")
+  status      EnquiryStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Lead {
+  id           String      @id @default(cuid())
+  name         String
+  phone        String
+  email        String?
+  courseId      String?
+  course       Course?     @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  collegeId    String?
+  college      College?    @relation(fields: [collegeId], references: [id], onDelete: SetNull)
+  city         String?
+  status       LeadStatus  @default(NEW)
+  notes        String?     @db.Text
+  counsellorId String?
+  counsellor   Counsellor? @relation(fields: [counsellorId], references: [id], onDelete: SetNull)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model Blog {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  content     String   @db.Text
+  excerpt     String?
+  coverImage  String?
+  published   Boolean  @default(false)
+  authorId    String?
+  author      User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  tags        String?
+  metaTitle   String?
+  metaDesc    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Counsellor {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String?  @unique
+  isActive  Boolean  @default(true)
+  leads     Lead[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Banner {
+  id        String   @id @default(cuid())
+  title     String
+  imageUrl  String
+  link      String?
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  title     String
+  message   String
+  type      String   @default("info")
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model ActivityLog {
+  id          String   @id @default(cuid())
+  action      String
+  description String
+  entityType  String
+  entityId    String?
+  createdAt   DateTime @default(now())
+}

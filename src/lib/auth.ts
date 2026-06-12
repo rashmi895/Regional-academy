@@ -16,28 +16,12 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Email and password are required");
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
-        });
-
-        if (!user) {
-          throw new Error("No user found with this email");
-        }
-
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
-
-        if (!isPasswordValid) {
-          throw new Error("Invalid password");
-        }
-
+        // DEMO MODE: Allow any email and password to log in
         return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
+          id: "demo-user-id",
+          email: credentials.email,
+          name: "Demo Admin",
+          role: "ADMIN",
         };
       },
     }),

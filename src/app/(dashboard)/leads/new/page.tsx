@@ -4,6 +4,8 @@ import Link from "next/link";
 import prisma from "@/lib/prisma";
 import { SubmitButton } from "./SubmitButton";
 
+export const dynamic = "force-dynamic";
+
 export default async function AddLeadPage() {
   // Fetch dropdown options concurrently
   const [colleges, courses, counsellors] = await Promise.all([

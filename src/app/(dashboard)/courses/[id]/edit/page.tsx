@@ -5,6 +5,8 @@ import prisma from "@/lib/prisma";
 import { SubmitButton } from "../../new/SubmitButton";
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 export default async function EditCoursePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const course = await prisma.course.findUnique({

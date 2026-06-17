@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { Plus, Search, Filter, Phone, Mail, MoreHorizontal } from "lucide-react";
 
+import Link from "next/link";
+
 const mockLeads = [
   { id: 1, name: "Ananya Sharma", phone: "9876543210", email: "ananya@gmail.com", course: "B.Tech", city: "Bhubaneswar", status: "New", assignee: "Rajesh" },
   { id: 2, name: "Rahul Mishra", phone: "9876543211", email: "rahul@gmail.com", course: "MBA", city: "Cuttack", status: "Hot", assignee: "Meera" },
@@ -19,9 +21,9 @@ export default function LeadsPage() {
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-wide">Lead Management</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Track and manage student admissions pipeline</p>
         </div>
-        <button className="btn-primary">
+        <Link href="/leads/new" className="btn-primary flex items-center gap-2">
           <Plus className="h-4 w-4" /> Add Lead
-        </button>
+        </Link>
       </div>
 
       <motion.div

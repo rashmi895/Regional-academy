@@ -6,25 +6,8 @@ import { Building, MapPin, Globe, Mail, Phone, Hash, Link as LinkIcon, Save, Ima
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { useRef } from "react";
+import { SubmitButton } from "../SubmitButton";
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className={`btn-primary flex items-center gap-2 px-6 py-3 ${pending ? "opacity-70 cursor-not-allowed" : ""}`}
-    >
-      {pending ? (
-        <div className="h-4 w-4 border-2 border-slate-200 dark:border-white/ border-t-white rounded-full animate-spin" />
-      ) : (
-        <Save className="h-4 w-4" />
-      )}
-      {pending ? "Saving College..." : "Save College Profile"}
-    </button>
-  );
-}
 
 export default function AddCollegePage() {
   const formRef = useRef<HTMLFormElement>(null);

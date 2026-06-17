@@ -87,10 +87,12 @@ model Course {
   name        String
   slug        String      @unique
   level       CourseLevel
+  category    CollegeCategory @default(ODISHA)
   duration    String
   description String?     @db.Text
   fees        String?
   eligibility String?
+  collegeName String?
   collegeId   String?
   college     College?    @relation(fields: [collegeId], references: [id], onDelete: SetNull)
   isActive    Boolean     @default(true)

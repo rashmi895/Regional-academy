@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { Plus, Search, Filter, Edit, Trash2, Globe, EyeOff } from "lucide-react";
 
+import Link from "next/link";
+
 const mockBlogs = [
   { id: 1, title: "JEE Main 2026 Session 2: Complete Guide", author: "Admin", date: "Jun 04, 2026", status: "Published", views: "1.2k" },
   { id: 2, title: "Top 10 Engineering Colleges in Odisha 2026", author: "Admin", date: "May 28, 2026", status: "Published", views: "3.4k" },
@@ -17,9 +19,9 @@ export default function BlogsPage() {
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-wide">Blogs</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage articles, news, and SEO content</p>
         </div>
-        <button className="btn-primary">
+        <Link href="/blogs/new" className="btn-primary flex items-center gap-2">
           <Plus className="h-4 w-4" /> Add Blog
-        </button>
+        </Link>
       </div>
 
       <motion.div

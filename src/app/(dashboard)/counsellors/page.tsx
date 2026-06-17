@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { Plus, Search, MoreVertical, Edit, Trash2, Mail, Phone, Users } from "lucide-react";
 
+import Link from "next/link";
+
 const mockCounsellors = [
   { id: 1, name: "Rajesh Kumar", phone: "9900990001", email: "rajesh@regionalacademy.co.in", leads: 45, status: "Active" },
   { id: 2, name: "Meera Singh", phone: "9900990002", email: "meera@regionalacademy.co.in", leads: 38, status: "Active" },
@@ -16,9 +18,9 @@ export default function CounsellorsPage() {
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-wide">Counsellors</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage admission counsellors and their assigned leads</p>
         </div>
-        <button className="btn-primary">
+        <Link href="/counsellors/new" className="btn-primary flex items-center gap-2">
           <Plus className="h-4 w-4" /> Add Counsellor
-        </button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

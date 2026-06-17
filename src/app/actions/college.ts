@@ -86,3 +86,77 @@ export async function deleteCollege(id: string) {
     throw new Error("Failed to delete college.");
   }
 }
+
+export async function updateCollege(id: string, formData: FormData) {
+  const name = formData.get("name") as string;
+  const location = formData.get("location") as string;
+  const city = formData.get("city") as string;
+  const state = (formData.get("state") as string) || "Odisha";
+  const type = formData.get("type") as CollegeType;
+  const category = formData.get("category") as any;
+  const description = formData.get("description") as string;
+  const website = formData.get("website") as string;
+  const phone = formData.get("phone") as string;
+  const email = formData.get("email") as string;
+  const rankingStr = formData.get("ranking") as string;
+  const isActive = formData.get("isActive") === "true";
+  
+  const ranking = rankingStr ? parseInt(rankingStr) : null;
+  const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
+
+  let logoUrl = undefined;
+  const logoFile = formData.get("logo") as File | null;
+  
+  if (logoFile && logoFile.size > 0) {
+    const bytes = await logoFile.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    try {
+      await mkdir(uploadDir, { recursive: true });
+    } catch (e) {
+      // ignore directory exists error
+    }
+
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const filename = `${uniqueSuffix}-${logoFile.name.replace(/[^a-zA-Z0-9.]/g, "")}`;
+    const filePath = path.join(uploadDir, filename);
+    
+    await writeFile(filePath, buffer);
+    logoUrl = `/uploads/${filename}`;
+  }
+
+  const dataToUpdate: any = {
+    name,
+    slug,
+    location,
+    city,
+    state,
+    type,
+    category,
+    description,
+    website,
+    phone,
+    email,
+    ranking,
+    isActive,
+  };
+
+  if (logoUrl) {
+    dataToUpdate.logo = logoUrl;
+  }
+
+  try {
+    await prisma.college.update({
+      where: { id },
+      data: dataToUpdate,
+    });
+  } catch (error) {
+    console.error("Error updating college:", error);
+    throw new Error("Failed to update college.");
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/colleges");
+  redirect("/colleges");
+}

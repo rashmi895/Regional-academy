@@ -110,18 +110,17 @@ export default function CollegesClient({ initialColleges }: { initialColleges: C
                     </td>
                     <td className="text-right">
                       <div className="flex justify-end gap-2">
-                        <button className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-blue-400 transition-colors rounded-md hover:bg-blue-400/10">
-                          <Edit className="h-4 w-4" />
-                        </button>
+                        <Link href={`/colleges/${college.id}/edit`}>
+                          <button className="p-1.5 text-slate-400 hover:text-blue-400 transition-colors rounded-md hover:bg-blue-400/10">
+                            <Edit className="h-4 w-4" />
+                          </button>
+                        </Link>
                         <button 
                           onClick={() => handleDelete(college.id)}
                           disabled={isPending}
-                          className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-red-400 transition-colors rounded-md hover:bg-red-400/10 disabled:opacity-50"
+                          className="p-1.5 text-slate-400 hover:text-red-400 transition-colors rounded-md hover:bg-red-400/10 disabled:opacity-50"
                         >
                           <Trash2 className="h-4 w-4" />
-                        </button>
-                        <button className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white transition-colors rounded-md hover:bg-slate-100 dark:bg-white/">
-                          <MoreVertical className="h-4 w-4" />
                         </button>
                       </div>
                     </td>

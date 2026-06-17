@@ -33,7 +33,7 @@ export default function BannersPage() {
         
         <div className="divide-y divide-white/5">
           {mockBanners.map((banner) => (
-            <div key={banner.id} className="p-4 grid grid-cols-12 gap-4 items-center hover:bg-slate-100 dark:bg-white/ transition-colors group">
+            <div key={banner.id} className="p-4 grid grid-cols-12 gap-4 items-center group">
               <div className="col-span-1 flex items-center justify-center">
                 <button className="text-slate-500 hover:text-slate-900 dark:text-white cursor-grab">
                   <GripVertical className="h-5 w-5" />
